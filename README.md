@@ -1,7 +1,7 @@
 Overview
 
-This project is a Retrieval-Augmented Generation (RAG) based chatbot built using n8n, designed to assist users with queries related to Family Law in Pakistan.
-It retrieves accurate legal information from law documents and court references, then generates AI-powered responses using the integrated chat model.
+This project is a Retrieval-Augmented Generation (RAG) based chatbot built using n8n, designed to assist users with queries related to Family Law in Pakistan.This chatbot describes the domestic and family relationship and matters involving marriage, divorce,child custudy, inheritance and other domestic affairs according to PAKISTAN CIVIL LAW.
+It retrieves accurate legal information from 6 law documents MUSLIM FAMILY LAW OF PAKISTAN,DISSOLUTION OF MUSLIM MARRIAGE ACT 1939, CHILD MARRIAGE RESTRAIT ACT 1929, WEST PPAKISTAN FAMILY COURT ACT 1964,GUARDIAN AND WARD ACT 1890, and court references, then generates AI-powered responses using the integrated chat model.
 Workflow Summary
 
 The workflow is built in n8n and includes the following core components:
@@ -18,4 +18,5 @@ RAG Retrieval Node – Fetches the most relevant legal context based on user que
 
 Chat Model Node (OpenAI ) – Generates human-like, context-aware answers.
 
-Memory Node – Maintains conversation history for a natural chat experience.
+Post Grase Memory Node – Maintains conversation history for a natural chat experience.
+AI AGENT. Answer the queries of any person regarding FAMILY LAW IN PAKISTAN.
