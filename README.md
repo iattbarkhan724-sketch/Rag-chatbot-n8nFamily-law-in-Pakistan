@@ -8,7 +8,7 @@ The workflow is built in n8n and includes the following core components:
 
 Trigger Node (Chat/Manual Trigger) – Starts the chatbot session.
 
-Google Drive Node – Loads PDF files containing Family Law acts, rules, and judgments.
+Google Drive Node – Loads PDF file containing five law documents..
 
 Embedding Model Node – Converts text from PDFs into vector embeddings.
 
