@@ -1,0 +1,302 @@
+{
+  "name": "RAG chatbot FAMILY LAW IN PAKISTAN",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        704
+      ],
+      "id": "255aeee9-f7c9-4e81-b1e9-8a017b4dc1c2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1FneT0LzQBrsGxWbmnGGD1vKc-lSp7Yb_",
+          "mode": "list",
+          "cachedResultName": "Family law in Pakistan.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1FneT0LzQBrsGxWbmnGGD1vKc-lSp7Yb_/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -512,
+        704
+      ],
+      "id": "7dc9c6ac-450d-42da-87b5-b31475bb74b2",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "V0MM2SCKoq5tg2L4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        704
+      ],
+      "id": "f0ca75a6-9e64-4d8f-a2c9-91f611d72d34",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "m9nh7IbSN9EVtJe0",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        528
+      ],
+      "id": "70a53065-1c7a-4978-ab5f-628d68eb04cb",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "PqJ3LPcuBHXcZNQm",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        928
+      ],
+      "id": "254c990e-5606-4276-a265-5fd82fb7564f",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -928,
+        304
+      ],
+      "id": "c1890193-4695-4641-b9ca-12389d300abb",
+      "name": "When chat message received",
+      "webhookId": "4f2c0493-3933-4dd5-aaee-953a008758c4"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. You are an intelligent legal assistant specialized in Family Law of Pakistan.\nYour purpose is to answer user questions only based on the information contained in the provided PDF documents related to family law (such as marriage, divorce, child custody, inheritance, maintenance, dower, and guardianship).\n\nRules for responses:\n\nUse the retrieved context from the PDF embeddings as your main source of truth.\n\nIf the answer is not found in the documents, respond clearly:\n“The document does not provide information on this specific question.”\n\nGive answers that are factually accurate, concise, and written in simple English.\n\nWhenever possible, cite the relevant section or heading from the document.\n\nDo not provide personal opinions, legal advice, or speculative answers — only explain what the law or document says.\n\nAssume the user may not be familiar with legal terminology; explain terms briefly when needed.\n\nThe jurisdiction is Pakistan only — ignore any laws or examples from other countries."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -656,
+        96
+      ],
+      "id": "d2bf4bad-5211-4ddc-99ff-355fa5d1eee1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "retrieve answers for query from chat input",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        320
+      ],
+      "id": "064ecb72-d2e4-4996-bc1d-65c84fdc3c3a",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "m9nh7IbSN9EVtJe0",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        320
+      ],
+      "id": "3b43edf4-1489-471e-929f-318a466d1683",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "AtzjH1nh8ULtHzRK",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -768,
+        352
+      ],
+      "id": "0c7e68ce-ab20-4bc8-b239-c821d82610eb",
+      "name": "OpenAI Chat Model"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "68b816db-bee5-4bce-a23e-cad0f58e48c5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "91ef8703cb5f6be2d6924aefd1edb7a1d252cb39a6064bfeeffd81514165603c"
+  },
+  "id": "jtvsX0XGyvWI3BXx",
+  "tags": []
+}
